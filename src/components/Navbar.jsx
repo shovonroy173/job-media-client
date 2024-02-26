@@ -12,13 +12,24 @@ const explore = [
   { data1: "Logo Maker", data2: "Create your logo instantly" },
   { data1: "Fiverr Workspace", data2: "One place to manage your buisness" },
 ];
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [modal, setModal] = useState(false);
+  const [active, setActive] = useState(false);
+  const isActive = ()=>{
+    window.scrollY > 0 ? setActive(true) : setActive(false);
+  }
+  useEffect(()=>{
+    window.addEventListener("scroll" , isActive);
+    return ()=>{
+    window.addEventListener("scroll" , isActive);
+    };
+  } , []);
   return (
-    <div className="flex items-center justify-around h-20 px-8 fixed w-full">
+    <>
+    <div className={active ? `flex items-center justify-around h-20 px-8 fixed w-full bg-white border-b-2 border-tertiary z-10` : `flex items-center justify-around h-20 px-8 w-full`} >
       <div>
         <p>
           jobs <span>.</span>
@@ -119,6 +130,20 @@ const Navbar = () => {
         <p className="py-2 px-4 rounded-md border">Join</p>
       </div>
     </div>
+    <div className={active ? `flex items-center justify-around h-10 px-8 fixed w-full bg-white mt-20 border-b-2 border-tertiary z-10` : `hidden`}>
+      <p>Graphics & Design </p>
+      <p>Programming & Tech</p>
+      <p>Digital Marketing</p>
+      <p>Video & Animation
+</p>
+      <p>Writing & Translation</p>
+      <p>Music & Audio</p>
+      <p>Business</p>
+      <p>Consulting</p>
+      <p>Data</p>
+      <p>AI Servies</p>
+    </div>
+    </>
   );
 };
 

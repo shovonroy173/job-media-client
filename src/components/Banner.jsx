@@ -4,9 +4,9 @@ import SearchIcon from "@mui/icons-material/Search";
 const Banner = () => {
   return (
     <>
-    <div className="bg-pink h-screen  ">
+    <div className="bg-pink ">
       <Navbar />
-      <div className="flex items-center justify-between px-14 ">
+      <div className="flex items-center justify-between px-14 relative">
         <div className="flex flex-col w-1/2 ">
           <div className="text-5xl font-extrabold">
             <p>Find the right freelance</p>
@@ -30,13 +30,13 @@ const Banner = () => {
             <p className="border-2 rounded-full px-1">AI Services</p>
           </div>
         </div>
-        <div className="mt-20 ">
+        <div className="">
           <img
             src="https://img.freepik.com/premium-psd/businessman-isolated-transparent-background_879541-1167.jpg"
             alt=""
-            className="h-[700px] "
+            className="h-[700px]"
           />
-          <div className=" absolute bottom-10 right-16 flex items-center border-2 border-white bg-background py-2 px-4 rounded-full">
+          <div className="absolute bottom-10 right-16 flex items-center border-2 border-white bg-background py-2 px-4 rounded-full">
             <img
               src="https://img.freepik.com/premium-psd/businessman-isolated-transparent-background_879541-1167.jpg"
               alt=""
