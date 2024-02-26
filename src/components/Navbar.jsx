@@ -2,11 +2,23 @@ import SearchIcon from "@mui/icons-material/Search";
 import LanguageIcon from "@mui/icons-material/Language";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+const explore = [
+  { data1: "Discover", data2: "Inspiring projects made on Fiverr" },
+  { data1: "Community", data2: "Connect with Fiverr's team and community" },
+  { data1: "Guides", data2: "In-depth guides covering buisness topics" },
+  { data1: "Podcast", data2: "Inside tips from top buisness minds " },
+  { data1: "Learn", data2: "Professional online courses , led by experts" },
+  { data1: "Blog", data2: "News , information and community stories" },
+  { data1: "Logo Maker", data2: "Create your logo instantly" },
+  { data1: "Fiverr Workspace", data2: "One place to manage your buisness" },
+];
 import { useState } from "react";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [modal, setModal] = useState(false);
   return (
-    <div className="flex items-center justify-around h-20 bg-pink ">
+    <div className="flex items-center justify-around h-20 px-8 z-999">
       <div>
         <p>
           jobs <span>.</span>
@@ -24,6 +36,7 @@ const Navbar = () => {
           <KeyboardArrowDownIcon
             onClick={() => {
               setOpen(!open);
+              setOpen2(false);
             }}
             className={open && `rotate-180`}
           />
@@ -35,7 +48,6 @@ const Navbar = () => {
                 <RemoveRedEyeIcon
                   sx={{
                     fontSize: 50,
-                    
                   }}
                 />
               </div>
@@ -52,7 +64,6 @@ const Navbar = () => {
                 <RemoveRedEyeIcon
                   sx={{
                     fontSize: 50,
-                    
                   }}
                 />
               </div>
@@ -68,14 +79,44 @@ const Navbar = () => {
         )}
 
         <p>
-          Explore <KeyboardArrowDownIcon />
+          Explore{" "}
+          <KeyboardArrowDownIcon
+            onClick={() => {
+              setOpen(false);
+              setOpen2(!open2);
+            }}
+            className={open2 && `rotate-180`}
+          />
         </p>
-        <p>
+        {open2 && (
+          <div className="absolute top-14  h-[500px] w-[400px] flex flex-col  p-4 rounded-[7px] shadow-box-shadow ">
+            {explore.map((item , index)=>(
+              <>
+              <div className=" flex items-center mb-2 " key={index}>
+              <div className="w-2/3">
+                <p className="text-xl font-semibold">{item.data1}</p>
+                <p className="text-nowrap text-tertiary font-medium">{item.data2}</p>
+              </div>
+            </div>
+            </>
+            ))}
+          </div>
+        )}
+        <p onClick={() => setModal(!modal)} className="hover:cursor-pointer">
           <LanguageIcon /> Language
         </p>
+        {modal && (
+          <div className="absolute top-64 -left-28 w-3/5 h-56 shadow-box-shadow2 bg-white p-2 flex flex-col justify-evenly text-xl font-medium ">
+            <p className="hover:bg-secondary p-2 cursor-pointer">English</p>
+            <p className="hover:bg-secondary p-2 cursor-pointer">French</p>
+            <p className="hover:bg-secondary p-2 cursor-pointer">Italian</p>
+            <p className="hover:bg-secondary p-2 cursor-pointer">Hindi</p>
+          </div>
+        )}
+
         <p>Become a seller</p>
         <p>Sign in</p>
-        <p>Join</p>
+        <p className="py-2 px-4 rounded-md border">Join</p>
       </div>
     </div>
   );
