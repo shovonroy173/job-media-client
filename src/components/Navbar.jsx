@@ -18,7 +18,7 @@ const Navbar = () => {
   const [open2, setOpen2] = useState(false);
   const [modal, setModal] = useState(false);
   return (
-    <div className="flex items-center justify-around h-20 px-8 z-999">
+    <div className="flex items-center justify-around h-20 px-8 fixed w-full">
       <div>
         <p>
           jobs <span>.</span>
@@ -42,7 +42,7 @@ const Navbar = () => {
           />
         </p>
         {open && (
-          <div className="absolute top-14 left-0.5 h-72 w-1/2 flex flex-col justify-evenly px-4 rounded-[7px] shadow-box-shadow">
+          <div className="absolute top-14 left-0.5 h-72 w-1/2 flex flex-col justify-evenly px-4 rounded-[7px] shadow-box-shadow bg-white z-10">
             <div className=" flex items-center justify-evenly  border border-gray-300 rounded-[10px]">
               <div>
                 <RemoveRedEyeIcon
@@ -89,7 +89,7 @@ const Navbar = () => {
           />
         </p>
         {open2 && (
-          <div className="absolute top-14  h-[500px] w-[400px] flex flex-col  p-4 rounded-[7px] shadow-box-shadow ">
+          <div className="absolute top-14  h-[500px] w-[400px] flex flex-col  p-4 rounded-[7px] shadow-box-shadow bg-white z-10">
             {explore.map((item , index)=>(
               <>
               <div className=" flex items-center mb-2 " key={index}>
