@@ -2,6 +2,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import LanguageIcon from "@mui/icons-material/Language";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import {useLocation} from  "react-router-dom";
 const explore = [
   { data1: "Discover", data2: "Inspiring projects made on Fiverr" },
   { data1: "Community", data2: "Connect with Fiverr's team and community" },
@@ -18,6 +19,8 @@ const Navbar = () => {
   const [open2, setOpen2] = useState(false);
   const [modal, setModal] = useState(false);
   const [active, setActive] = useState(false);
+  const {pathname} = useLocation();
+  console.log(pathname);
   const isActive = ()=>{
     window.scrollY > 0 ? setActive(true) : setActive(false);
   }
@@ -29,7 +32,7 @@ const Navbar = () => {
   } , []);
   return (
     <>
-    <div className={active ? `flex items-center justify-around h-20 px-8 fixed w-full bg-white border-b-2 border-tertiary z-10` : `flex items-center justify-around h-20 px-8 w-full`} >
+    <div className={active || pathname !== "/" ? `flex items-center justify-between h-20  fixed w-full bg-white border-b-2 border-tertiary z-50 px-14` : `flex items-center justify-around h-20  w-full px-14`} >
       <div>
         <p>
           jobs <span>.</span>
@@ -53,7 +56,7 @@ const Navbar = () => {
           />
         </p>
         {open && (
-          <div className="absolute top-14 left-0.5 h-72 w-1/2 flex flex-col justify-evenly px-4 rounded-[7px] shadow-box-shadow bg-white z-10">
+          <div className="absolute top-14 left-0.5 h-72 w-1/2 flex flex-col justify-evenly px-4 rounded-[7px] shadow-box-shadow bg-white z-30">
             <div className=" flex items-center justify-evenly  border border-gray-300 rounded-[10px]">
               <div>
                 <RemoveRedEyeIcon
@@ -100,7 +103,7 @@ const Navbar = () => {
           />
         </p>
         {open2 && (
-          <div className="absolute top-14  h-[500px] w-[400px] flex flex-col  p-4 rounded-[7px] shadow-box-shadow bg-white z-10">
+          <div className="absolute top-14  h-[500px] w-[400px] flex flex-col  p-4 rounded-[7px] shadow-box-shadow bg-white z-20">
             {explore.map((item , index)=>(
               <>
               <div className=" flex items-center mb-2 " key={index}>
@@ -117,7 +120,7 @@ const Navbar = () => {
           <LanguageIcon /> Language
         </p>
         {modal && (
-          <div className="absolute top-64 -left-28 w-3/5 h-56 shadow-box-shadow2 bg-white p-2 flex flex-col justify-evenly text-xl font-medium ">
+          <div className="absolute top-64 -left-28 w-3/5 h-56 shadow-box-shadow2 bg-white p-2 flex flex-col justify-evenly text-xl font-medium z-20 ">
             <p className="hover:bg-secondary p-2 cursor-pointer">English</p>
             <p className="hover:bg-secondary p-2 cursor-pointer">French</p>
             <p className="hover:bg-secondary p-2 cursor-pointer">Italian</p>
@@ -130,7 +133,7 @@ const Navbar = () => {
         <p className="py-2 px-4 rounded-md border">Join</p>
       </div>
     </div>
-    <div className={active ? `flex items-center justify-around h-10 px-8 fixed w-full bg-white mt-20 border-b-2 border-tertiary z-10` : `hidden`}>
+    <div className={active || pathname !== "/"  ? `flex items-center justify-between h-10 px-14 fixed w-full bg-white mt-20 border-b-2 border-tertiary z-10` : `hidden`}>
       <p>Graphics & Design </p>
       <p>Programming & Tech</p>
       <p>Digital Marketing</p>

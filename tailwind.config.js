@@ -22,6 +22,8 @@ export default {
       lightGreen: "#39DC98",
       lightRed: "#FD809E",
       background: "rgba(167, 163, 165, 0.46)",
+      brandBack:"#f2f2f2"
+
     },
   },
   plugins: [],
