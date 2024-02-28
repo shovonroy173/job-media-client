@@ -13,14 +13,16 @@ export default {
       },
     },
     colors: {
-      primary: "#010851",
+      green:"#006400" , 
+      lightGreen:"#32CD32" ,
+      extreamLightGreen:"#90EE90" ,  
+      blue: "#010851",
+      lightBlue:"#0040ff" , 
       secondary: "#9A7AF1",
-      tertiary: "#707070",
-      pink: "#EE9AE5",
+      gray:"#404040" , 
+      lightGray: "#cccccc",
       white: "#ffff",
       black: "#000000",
-      lightGreen: "#39DC98",
-      lightRed: "#FD809E",
       background: "rgba(167, 163, 165, 0.46)",
       brandBack:"#f2f2f2"
 

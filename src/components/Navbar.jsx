@@ -32,18 +32,19 @@ const Navbar = () => {
   } , []);
   return (
     <>
-    <div className={active || pathname !== "/" ? `flex items-center justify-between h-20  fixed w-full bg-white border-b-2 border-tertiary z-50 px-14` : `flex items-center justify-around h-20  w-full px-14`} >
+    <div className={active || pathname !== "/" ? `flex items-center justify-between h-20  fixed w-full bg-white border-b-2 border-tertiary z-50 px-14` : `flex items-center justify-between h-20  w-full px-14`} >
       <div>
         <p>
           jobs <span>.</span>
         </p>
       </div>
-      <div className="flex items-center  ">
+      {(active )  && <div className="flex items-center border-2 border-lightGray   ">
         <input type="text" placeholder="find services" className="w-[350px]" />
         <div>
-          <SearchIcon />
+          <SearchIcon className="bg-black text-white" />
         </div>
-      </div>
+      </div>}
+      
       <div className="flex items-center justify-evenly w-1/2 relative">
         <p>
           Fiverr Pro

@@ -1,7 +1,7 @@
 import VerifiedIcon from '@mui/icons-material/Verified';
 const Buisness = () => {
   return (
-    <div className='flex items-center justify-between px-14 py-20 bg-primary text-white rounded-3xl'>
+    <div className='flex items-center justify-between px-14 py-20 bg-blue text-white rounded-3xl'>
         <div>
         <p className='text-2xl font-bold mb-10 '>
             <span className='text-5xl'>jobs</span><span className='text-lightGreen'>.</span>  Buisness Solutions 

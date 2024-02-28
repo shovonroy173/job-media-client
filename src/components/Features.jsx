@@ -1,7 +1,7 @@
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 const Features = () => {
   return (
-    <div className='flex items-center justify-between px-14 py-20 bg-lightGreen'>
+    <div className='flex items-center justify-between px-14 py-20 bg-extreamLightGreen'>
         <div>
             <p className='text-4xl font-bold mb-10'>The best part? Everything.</p>
             <div className='mb-5'>
