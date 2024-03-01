@@ -1,4 +1,3 @@
-import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import InfoIcon from "@mui/icons-material/Info";
 import HdrStrongIcon from "@mui/icons-material/HdrStrong";
@@ -37,9 +36,9 @@ const GigPage = () => {
   const [btn2, setBtn2] = useState(false);
   const [btn3, setBtn3] = useState(false);
   return (
-    <div className="relative">
+    <div className="relative ">
       <Navbar />
-      <div className="absolute top-36 px-14 w-full h-screen  items-start justify-between space-y-10  min-[1280px]:flex">
+      <div className="absolute top-36 px-14 w-full h-screen items-start justify-between space-y-10  min-[1280px]:flex">
         <div className="w-[700px] space-y-10 ">
           <p className="text-gray">
             <HomeIcon /> / Graphics & Design / Logo Design
@@ -308,7 +307,7 @@ const GigPage = () => {
                   Vector file
                 </td>
                 <td className="border-[1px] border-extreamLightGray text-center p-3">
-                  <CheckIcon />
+                  <CheckIcon className="text-lightGray" />
                 </td>
                 <td className="border-[1px] border-extreamLightGray text-center p-3">
                   <CheckIcon />
@@ -350,7 +349,7 @@ const GigPage = () => {
                   Source file
                 </td>
                 <td className="border-[1px] border-extreamLightGray text-center p-3">
-                  <CheckIcon />
+                  <CheckIcon className="text-lightGray" />
                 </td>
                 <td className="border-[1px] border-extreamLightGray text-center p-3">
                   <CheckIcon />
@@ -364,10 +363,10 @@ const GigPage = () => {
                   Social media kit
                 </td>
                 <td className="border-[1px] border-extreamLightGray text-center p-3">
-                  <CheckIcon />
+                  <CheckIcon className="text-lightGray" />
                 </td>
                 <td className="border-[1px] border-extreamLightGray text-center p-3">
-                  <CheckIcon />
+                  <CheckIcon className="text-lightGray" />
                 </td>
                 <td className="border-[1px] border-extreamLightGray text-center p-3">
                   <CheckIcon />
@@ -495,7 +494,6 @@ const GigPage = () => {
           <div></div>
           <div className="space-y-5">
             <p className="text-2xl font-bold">Reviews</p>
-
             <div className="flex">
               <input
                 type="text"
@@ -533,8 +531,8 @@ const GigPage = () => {
             <button
               className={
                 btn1
-                  ? `border-b-2 border-black text-black py-4 w-[150px]  font-bold`
-                  : `text-gray py-4  font-bold border-[1px] border-extreamLightGray bg-almostWhite w-[150px] `
+                  ? `border-b-2 border-black text-black py-4 max-[1280px]:w-1/3 w-[150px]  font-bold`
+                  : `text-gray py-4  font-bold border-[1px] border-extreamLightGray bg-almostWhite max-[1280px]:w-1/3 w-[150px] `
               }
               onClick={() => {
                 setBtn1(true);
@@ -547,8 +545,8 @@ const GigPage = () => {
             <button
               className={
                 btn2
-                  ? ` border-b-2 border-black text-black py-4 w-[150px] font-bold`
-                  : `text-gray py-4 w-[150px] font-bold border-[1px] border-extreamLightGray bg-almostWhite  `
+                  ? ` border-b-2 border-black text-black py-4 max-[1280px]:w-1/3 w-[150px] font-bold`
+                  : `text-gray py-4 max-[1280px]:w-1/3 w-[150px] font-bold border-[1px] border-extreamLightGray bg-almostWhite  `
               }
               onClick={() => {
                 setBtn1(false);
@@ -561,8 +559,8 @@ const GigPage = () => {
             <button
               className={
                 btn3
-                  ? ` border-b-2 border-black text-black py-4 w-[150px] font-bold`
-                  : `text-gray py-4 w-[150px] font-bold border-[1px] border-extreamLightGray bg-almostWhite `
+                  ? ` border-b-2 border-black text-black py-4 max-[1280px]:w-1/3 w-[150px] font-bold`
+                  : `text-gray py-4 max-[1280px]:w-1/3   w-[150px] font-bold border-[1px] border-extreamLightGray bg-almostWhite `
               }
               onClick={() => {
                 setBtn1(false);
@@ -586,19 +584,19 @@ const GigPage = () => {
                   <span className="font-medium text-lg">BASIC</span> 1 Logo concept + High-Quality JPG + <p>Transparent PNG + 3D
                   Mockup</p> 
                 </p>
-                <p><AccessTimeIcon/> 2 Days <FlipCameraAndroidIcon/>   Delivery Unlimited Revisions </p>
-                <div>
-                  <p className="text-lightGray">
-                    <CheckIcon /> 1 concept included
+                <p className="text-gray space-x-4 font-semibold"><AccessTimeIcon/> 2 Days <FlipCameraAndroidIcon/>   Delivery Unlimited Revisions </p>
+                <div className="text-lightGray">
+                  <p >
+                    <CheckIcon className="text-black"  /> 1 concept included
                   </p>
                   <p>
-                    <CheckIcon /> Logo transparency
+                    <CheckIcon className="text-black" /> Logo transparency
                   </p>
                   <p>
                     <CheckIcon /> Vector file
                   </p>
                   <p>
-                    <CheckIcon /> Printable file
+                    <CheckIcon className="text-black" /> Printable file
                   </p>
                   <p>
                     <CheckIcon />Include 3D mockup
@@ -614,12 +612,87 @@ const GigPage = () => {
                 <button className="bg-black text-white font-extrabold text-xl w-full py-3 rounded-lg">Continue</button>
               </div>
             )}
-            {btn2 && <div></div>}
-            {btn3 && <div></div>}
+            {btn2 && 
+            <div className="space-y-5 p-5 border-[1px] border-extreamLightGray">
+                <div>
+                  <p className="text-3xl font-extrabold text-gray">₹3,480</p>
+                  <p className="text-gray">Save up to 15% with <span className="text-green">
+                  Subscribe to Save</span> </p>
+                </div>
+
+                <p className="text-gray text-wrap">
+                  <span className="font-medium text-lg">BEST MATCH </span> 2 Logo concepts + High-Quality JPG + <p>Transparent PNG + 3D
+                  Mockup</p> 
+                </p>
+                <p className="text-gray space-x-4 font-semibold"><AccessTimeIcon/> 2 Days <FlipCameraAndroidIcon/>   Delivery Unlimited Revisions </p>
+                <div className="text-lightGray">
+                  <p >
+                    <CheckIcon className="text-black"  /> 1 concept included
+                  </p>
+                  <p>
+                    <CheckIcon className="text-black" /> Logo transparency
+                  </p>
+                  <p>
+                    <CheckIcon /> Vector file
+                  </p>
+                  <p>
+                    <CheckIcon className="text-black" /> Printable file
+                  </p>
+                  <p>
+                    <CheckIcon className="text-black"/>Include 3D mockup
+
+                  </p>
+                  <p>
+                    <CheckIcon className="text-black"/> Include source file
+                  </p>
+                  <p>
+                    <CheckIcon /> Include social media kit
+                  </p>
+                </div>
+                <button className="bg-black text-white font-extrabold text-xl w-full py-3 rounded-lg">Continue</button>
+              </div>
+              }
+            {btn3 && <div className="space-y-5 p-5 border-[1px] border-extreamLightGray">
+                <div>
+                  <p className="text-3xl font-extrabold text-gray">₹6,090
+</p>
+                  <p className="text-gray">Save up to 15% with <span className="text-green">
+                  Subscribe to Save</span> </p>
+                </div>
+
+                <p className="text-gray text-wrap">
+                  <span className="font-medium text-lg">PREMIUM </span> 3 Logo concepts + High-Quality JPG +<p>Transparent PNG + 3D Mockup + Social media kit</p> 
+                </p>
+                <p className="text-gray space-x-4 font-semibold"><AccessTimeIcon/> 2 Days <FlipCameraAndroidIcon/>   Delivery Unlimited Revisions </p>
+                <div className="text-lightGray">
+                  <p >
+                    <CheckIcon className="text-black"  /> 1 concept included
+                  </p>
+                  <p>
+                    <CheckIcon className="text-black" /> Logo transparency
+                  </p>
+                  <p>
+                    <CheckIcon className="text-black" /> Vector file
+                  </p>
+                  <p>
+                    <CheckIcon className="text-black" /> Printable file
+                  </p>
+                  <p>
+                    <CheckIcon className="text-black"/>Include 3D mockup
+
+                  </p>
+                  <p>
+                    <CheckIcon className="text-black"/> Include source file
+                  </p>
+                  <p>
+                    <CheckIcon className="text-black"/> Include social media kit
+                  </p>
+                </div>
+                <button className="bg-black text-white font-extrabold text-xl w-full py-3 rounded-lg">Continue</button>
+              </div>}
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
