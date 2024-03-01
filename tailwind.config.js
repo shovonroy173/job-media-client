@@ -22,6 +22,7 @@ export default {
       lightGray: "#8d8b8b" ,
       extreamLightGray: "#cccccc",
       white: "#ffff",
+      almostWhite:"#f2f2f2" , 
       black: "#000000",
       background: "rgba(167, 163, 165, 0.46)",
       brandBack:"#f2f2f2"
