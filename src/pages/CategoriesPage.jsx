@@ -7,7 +7,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import StarIcon from "@mui/icons-material/Star";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ReactPaginate from "react-paginate";
 import { useState } from "react";
 import Footer from "../components/Footer";
@@ -273,7 +273,6 @@ const items = [
     votes: "422",
     price: "1742",
   },
-
 ];
 const CategoriesPage = () => {
   const [itemOffset, setItemOffset] = useState(0);
@@ -291,11 +290,11 @@ const CategoriesPage = () => {
     setItemOffset(newOffset);
   };
   return (
-    <div className="relative ">
+    <>
       <Navbar />
+      <div className="px-14 w-full  ">
 
-      <div className="absolute top-36 px-14 w-full  ">
-        <div className="flex flex-col justify-between ">
+        <div className="flex flex-col justify-between pt-36 ">
           <p className="flex items-center font-semibold ">
             <HomeIcon /> <span className="mx-5">/</span>{" "}
             <span>Graphics & Design</span>
@@ -356,57 +355,59 @@ const CategoriesPage = () => {
             </div>
           </div>
         </div>
+
         <div className="my-10 flex items-center flex-wrap justify-between ">
-          {currentItems.map((item , index)=>(
-            <div className="w-[300px] h-[350px]  font-extrabold mb-5 relative" key={index}>
-            <img
-              src={item.img}
-              alt=""
-              className="w-[300px] object-cover rounded-xl "
-            />
-            <FavoriteBorderIcon className="absolute top-3 right-3 hover:scale-150 rounded-full"/>
-            <div className="flex flex-col justify-around h-[150px]">
-            <p className="flex items-center justify-between">
-              <div className="flex items-center">
-                <img
-                  src="https://fiverr-res.cloudinary.com/t_profile_thumb,q_auto,f_auto/attachments/profile/photo/8563cebd23d715b3b35b807044964727-1611653633994/c0622120-e351-4950-95ea-ff9db5b82119.jpg"
-                  alt=""
-                  className="w-[30px] h-[30px] object-cover rounded-full"
-                />
-                <p>{item.name}</p>
+          {currentItems.map((item, index) => (
+            <div
+              className="w-[300px] h-[350px]  font-extrabold mb-5 relative"
+              key={index}
+            >
+              <img
+                src={item.img}
+                alt=""
+                className="w-[300px] object-cover rounded-xl "
+              />
+              <FavoriteBorderIcon className="absolute top-3 right-3 hover:scale-150 rounded-full" />
+              <div className="flex flex-col justify-around h-[150px]">
+                <p className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <img
+                      src="https://fiverr-res.cloudinary.com/t_profile_thumb,q_auto,f_auto/attachments/profile/photo/8563cebd23d715b3b35b807044964727-1611653633994/c0622120-e351-4950-95ea-ff9db5b82119.jpg"
+                      alt=""
+                      className="w-[30px] h-[30px] object-cover rounded-full"
+                    />
+                    <p>{item.name}</p>
+                  </div>
+                  {item.level}
+                </p>
+                <p className=" font-medium">{item.desc}</p>
+                <p>
+                  <StarIcon /> {item.rating}{" "}
+                  <span className="text-tertiary">({item.votes})</span>
+                </p>
+                <p>From ${item.price}</p>
               </div>
-              {item.level}
-            </p>
-            <p className=" font-medium">
-              {item.desc}
-            </p>
-            <p>
-              <StarIcon /> {item.rating} <span className="text-tertiary">({item.votes})</span>
-            </p>
-            <p>From ${item.price}</p>
             </div>
-          </div>
           ))}
-          
         </div>
         <ReactPaginate
-        breakLabel="..."
-        nextLabel="next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        pageCount={pageCount}
-        previousLabel="< previous"
-        renderOnZeroPageCount={null}
-        containerClassName="flex items-center justify-center h-20 mb-20"
-        pageLinkClassName="rounded-full mx-5 text-xl font-bold text-lightGreen "
-        activeClassName="px-0 py-2 rounded-full mx-5 text-xl font-bold bg-white border-2 border-lightGreen"
-        previousClassName="font-lg font-semibold text-lightGreen"
-        nextClassName="font-lg font-semibold text-lightGreen"
-      />
+          breakLabel="..."
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="< previous"
+          renderOnZeroPageCount={null}
+          containerClassName="flex items-center justify-center h-20 mb-20"
+          pageLinkClassName="rounded-full mx-5 text-xl font-bold text-lightGreen "
+          activeClassName="px-0 py-2 rounded-full mx-5 text-xl font-bold bg-white border-2 border-lightGreen"
+          previousClassName="font-lg font-semibold text-lightGreen"
+          nextClassName="font-lg font-semibold text-lightGreen"
+        />
       </div>
-
       <Footer/>
-    </div>
+    </>
+    
   );
 };
 
