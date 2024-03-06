@@ -12,6 +12,7 @@ import "react-multi-carousel/lib/styles.css";
 import { useState } from "react";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import FlipCameraAndroidIcon from '@mui/icons-material/FlipCameraAndroid';
+import Footer from "../components/Footer";
 const GigPage = () => {
   const responsive = {
     superLargeDesktop: {
@@ -36,9 +37,9 @@ const GigPage = () => {
   const [btn2, setBtn2] = useState(false);
   const [btn3, setBtn3] = useState(false);
   return (
-    <div className="relative ">
+    <>
       <Navbar />
-      <div className="absolute top-36 px-14 w-full h-screen items-start justify-between space-y-10  min-[1280px]:flex">
+      <div className="pt-36 px-14 w-full  items-start justify-between space-y-10  min-[1280px]:flex">
         <div className="w-[700px] space-y-10 ">
           <p className="text-gray">
             <HomeIcon /> / Graphics & Design / Logo Design
@@ -693,7 +694,8 @@ const GigPage = () => {
           </div>
         </div>
       </div>
-    </div>
+      <Footer/>
+    </>
   );
 };
 
