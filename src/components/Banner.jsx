@@ -1,12 +1,18 @@
 import Brands from "./Brands";
 import Navbar from "./Navbar";
 import SearchIcon from "@mui/icons-material/Search";
+// import { useEffect } from "react";
+// import { useSelector } from "react-redux";
+// import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Banner = () => {
+  // const user = useSelector((state) => state.user);
+
   return (
     <>
-    <div className="bg-pink ">
+    <div  >
       <Navbar />
-      <div className="flex items-center justify-between px-14 relative">
+      <div className="flex items-center justify-between px-14 bg-green">
         <div className="flex flex-col w-1/2 ">
           <div className="text-5xl font-extrabold">
             <p>Find the right freelance</p>
@@ -55,6 +61,7 @@ const Banner = () => {
       </div>
     </div>
     <Brands/>
+    {/* <ToastContainer /> */}
     </>
   );
 };

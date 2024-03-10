@@ -9,8 +9,11 @@ import FormControl from "@mui/material/FormControl";
 import StarIcon from "@mui/icons-material/Star";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ReactPaginate from "react-paginate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 const items = [
   {
     img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/327590710/original/f64c53e2a06cc996368097c22a4b37cc2bd64c3b.jpg",
@@ -277,11 +280,12 @@ const items = [
 const CategoriesPage = () => {
   const [itemOffset, setItemOffset] = useState(0);
   const itemsPerPage = 10;
+  const [gigs , setGigs] = useState([]);
 
   const endOffset = itemOffset + itemsPerPage;
   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-  const currentItems = items.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(items.length / itemsPerPage);
+  const currentItems = gigs.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(gigs.length / itemsPerPage);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
@@ -289,6 +293,60 @@ const CategoriesPage = () => {
 
     setItemOffset(newOffset);
   };
+  const location = useLocation();
+  console.log(location);
+  const pathType = location.pathname.split("/")[2];
+  
+  // const convert = (pathType)=>{
+  //   return pathType
+  //   .split('&')
+  //   .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+  //   .join(' & ');
+  // };
+  // const type = convert(pathType);
+  const type = decodeURIComponent(pathType).replace(/ /g, '')
+  console.log(type);
+  // const title = (location.state).split(' ').join('');
+
+const options = {
+  method: 'POST',
+  url: 'https://api.textcortex.com/v1/texts/products/titles',
+  headers: {'Content-Type': 'application/json', Authorization: `Bearer gAAAAABl7L9c1zIHNGHE9eVJkuRdOGa-gkO9UGY3aHDS0ZNysTMxoFm0rnzbdpC3yWZsCNUBOcwRBxrGclFT8TbOvNXuYU81_1f368OK_9pkLQCXOth65RDcLSGsMMgK2mctGeu9UYKr `},
+  data: {
+    brand: pathType,
+    category: location.state,
+    description: pathType + location.state,
+    formality: 'default',
+    keywords: ['authentic' , 'exclusive' , 'astonishing' , 'masterpiece' , 'stand out'],
+    max_tokens: 2048,
+    model: 'chat-sophos-1',
+    n: 1,
+    name: 'jobs-media',
+    source_lang: "en",
+    target_lang: 'en',
+    temperature: 0.65
+  }
+};
+
+const [desc , setDesc] = useState("")
+useEffect(()=>{
+  axios.request(options).then(function (response) {
+    setDesc(response.data.data.outputs[0].text);
+  }).catch(function (error) {
+    console.error(error);
+  });
+} , []);
+
+useEffect(()=>{
+const getGigs = async()=>{
+  const res = await axios.get(`http://localhost:5000/api/gig/getGigsByTypes/${location.state}/${pathType}` );
+  console.log("LINE AT 340" , res.data);
+  setGigs(res.data);
+}
+getGigs();
+} , [location.state , pathType])
+
+const navigate = useNavigate();
   return (
     <>
       <Navbar />
@@ -296,13 +354,13 @@ const CategoriesPage = () => {
 
         <div className="flex flex-col justify-between pt-36 ">
           <p className="flex items-center font-semibold ">
-            <HomeIcon /> <span className="mx-5">/</span>{" "}
-            <span>Graphics & Design</span>
+            <NavLink to="/"><HomeIcon  /> </NavLink>
+            <span className="mx-5">/</span>
+            <span>{type}</span>
           </p>
           <p className="text-4xl font-extrabold">Logo Design</p>
           <p className="text-tertiary font-semibold">
-            Stand out from the crowd with a logo that fits your brand
-            personality
+            {desc}
           </p>
           <div className="flex justify-between items-center ">
             <div className="flex">
@@ -361,9 +419,10 @@ const CategoriesPage = () => {
             <div
               className="w-[300px] h-[350px]  font-extrabold mb-5 relative"
               key={index}
+              onClick={()=>navigate(`/gig/${pathType}/${item._id}`)}
             >
               <img
-                src={item.img}
+                src={item.urls[0]}
                 alt=""
                 className="w-[300px] object-cover rounded-xl "
               />
@@ -376,16 +435,17 @@ const CategoriesPage = () => {
                       alt=""
                       className="w-[30px] h-[30px] object-cover rounded-full"
                     />
-                    <p>{item.name}</p>
+                    <p>{item.author.name}</p>
                   </div>
-                  {item.level}
+                  <p>Level {item.author.level}</p>
+                  
                 </p>
-                <p className=" font-medium">{item.desc}</p>
-                <p>
+                <p className=" font-medium">{item.description}</p>
+                <p className="flex items-center">
                   <StarIcon /> {item.rating}{" "}
                   <span className="text-tertiary">({item.votes})</span>
                 </p>
-                <p>From ${item.price}</p>
+                <p>From ${item.basePrice[0]}</p>
               </div>
             </div>
           ))}

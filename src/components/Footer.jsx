@@ -5,7 +5,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 const Footer = () => {
   return (
-    <div className="bg-white text-tertiary fixed bottom-0 w-full flex justify-between px-14 items-center h-20 border-t-2">
+    <div className=" bg-white text-tertiary  bottom-0 w-full flex justify-between px-14 items-center h-16 border-t-2">
       <div className="flex ">
         <p className="text-2xl font-bold">
           jobs <span>.</span>

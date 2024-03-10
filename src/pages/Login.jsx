@@ -1,30 +1,78 @@
 import {  useState } from "react";
-// import {login} from "log-func";
-import {useDispatch} from "react-redux";
+import { useDispatch} from "react-redux";
 import { login } from "../redux/apiCalls.js";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-// import {
-//   getStorage,
-//   ref,
-//   uploadBytesResumable,
-//   getDownloadURL,
-// } from "firebase/storage";
-// import app from "../firebase.js";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errStatus, setErrStatus] = useState("");
   const dispatch = useDispatch();
-  const handleClick = ()=>{
+  const handleClick = async (e) => {
     // console.log("ok");
-    login(dispatch , {email , password} );
+    e.preventDefault();
+
+    if (email === "") {
+      toast.error("email is required!", {
+        position: "top-right",
+      });
+    } else if (!email.includes("@")) {
+      toast.warning("includes @ in your email!", {
+        position: "top-right",
+      });
+    } else if (password === "") {
+      toast.error("password is required!", {
+        position: "top-right",
+      });
+    } else if (password.length < 6) {
+      toast.error("password must be 6 char!", {
+        position: "top-right",
+      });
+    } else {
+      const res = await login(dispatch, { email, password });
+      // console.log("LINE AT 34", res.response.status);
+      if(res.email ){
+        setErrStatus( 200);
+      }
+      else{
+        setErrStatus(res.response.status);
+        
+      }
+    
+      if(errStatus === 404){
+toast.error("User not found!!" , {
+  position: "top-right",
+});
+      }else if(errStatus === 403){
+        toast.error("Incorrect password!!" , {
+          position: "top-right",
+        });
+      }
+      else if(errStatus === 500){
+        toast.error("Server error!!" , {
+          position: "top-right",
+        });
+      }
+      else{
+        toast.success("Login successfull!!" , {
+          position: "top-right",
+        });
+        setTimeout(()=>{
+          navigate("/");
+        } , 2000)
+       
+      }
+    }
   };
   const navigate = useNavigate();
-  const handleRedirect = ()=>{
+  const handleRedirect = () => {
     // console.log("ok");
-    navigate("/register")
-  }
+    navigate("/register");
+  };
+
   return (
     <div className="relative">
       <div className="absolute inset-x-1/3 top-20 ">
@@ -35,24 +83,25 @@ const Login = () => {
             placeholder="email"
             className=""
             name="name"
-            onChange={((e)=>(setEmail(e.target.value)))}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
-            placeholder="password"            className="registerInput"
+            placeholder="password"
+            className=""
             name="genre"
-            onChange={((e)=>(setPassword(e.target.value)))}
-
+            onChange={(e) => setPassword(e.target.value)}
           />
 
-        <button className="" onClick={handleClick} >
-          Sign In
-        </button>
-        <button className="" onClick={handleRedirect} >
-          New here? Click here to register.
-        </button>
+          <button className="" onClick={handleClick}>
+            Sign In
+          </button>
+          <button className="" onClick={handleRedirect}>
+            New here? Click here to register.
+          </button>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

@@ -24,7 +24,7 @@ const Guides = () => {
   return (
     <div className="px-14 py-20">
       <p className="text-4xl font-semibold mb-10 flex justify-between">
-        <p>Inspiring work made on Fiverr</p>
+        <p>Blogs</p>
         <p className="text-xl text-primary">
           See more
           <ChevronRightIcon />

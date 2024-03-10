@@ -9,10 +9,20 @@ import FormControl from "@mui/material/FormControl";
 import HomeIcon from "@mui/icons-material/Home";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { useState } from "react";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import FlipCameraAndroidIcon from '@mui/icons-material/FlipCameraAndroid';
+import { useEffect, useRef, useState } from "react";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import FlipCameraAndroidIcon from "@mui/icons-material/FlipCameraAndroid";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Footer from "../components/Footer";
+
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+
+import { loadStripe } from "@stripe/stripe-js";
+const KEY =
+  "pk_test_51N55v0SG4487ZVYHjPu1nZv0uWzyK13KJsIB6oxLWsfcYbuG85TG2sD31jmnAWLbE8l5NKiTXC7O5mrW1LE0YGxh00XlH0rs0X";
+
 const GigPage = () => {
   const responsive = {
     superLargeDesktop: {
@@ -33,33 +43,98 @@ const GigPage = () => {
       items: 1,
     },
   };
+  const packagesRef = useRef();
+
   const [btn1, setBtn1] = useState(true);
   const [btn2, setBtn2] = useState(false);
   const [btn3, setBtn3] = useState(false);
+
+  const [name, setName] = useState("Basic");
+
+  const location = useLocation();
+
+  const id = location.pathname.split("/")[3];
+  const [gig, setGig] = useState({});
+  const prices = gig?.basePrice;
+  const [price, setPrice] = useState(prices && gig?.basePrice[0]);
+
+  useEffect(() => {
+    const getGig = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/api/gig/getGigById/${id}`
+        );
+        // console.log("LINE AT 59" , res?.data);
+        setGig(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getGig();
+  }, [id]);
+
+  // console.log("Gig: ", gig);
+
+  const user = useSelector((state) => state.user);
+  const userId = user.currentUser._id;
+  const handlePayment = async () => {
+    const stripe = await loadStripe(KEY);
+    const res = await axios.post("http://localhost:5000/api/checkout/payment", {
+      price,
+      name,
+      userId,
+    });
+
+    const result = stripe.redirectToCheckout({
+      sessionId: res.data.id,
+    });
+
+    if ((await result).error) {
+      console.log((await result).error);
+    }
+  };
+  const pathType = location.pathname.split("/")[2];
+  const navigate = useNavigate();
+
+  const urls = gig?.urls;
+
+  // console.log(prices);
+
   return (
     <>
       <Navbar />
       <div className="pt-36 px-14 w-full  items-start justify-between space-y-10  min-[1280px]:flex">
         <div className="w-[700px] space-y-10 ">
           <p className="text-gray">
-            <HomeIcon /> / Graphics & Design / Logo Design
+            <NavLink to="/">
+              <HomeIcon />
+            </NavLink>
+            /
+            <span
+              onClick={() => {
+                navigate(`/categories/${pathType}`, { state: gig.title });
+              }}
+            >
+              Graphics & Design
+            </span>
+            / {gig.title}
           </p>
-          <p className="text-4xl font-bold text-gray">
-            I will design unique modern minimalist and business logo design
-          </p>
+          <p className="text-4xl font-bold text-gray">{gig.description}</p>
           <div className="flex">
             <img
-              src="https://fiverr-res.cloudinary.com/image/upload/t_profile_original,q_auto,f_auto/v1/attachments/profile/photo/8563cebd23d715b3b35b807044964727-1611653633994/c0622120-e351-4950-95ea-ff9db5b82119.jpg"
+              src="{gig}"
               alt=""
               className="w-[80px] h-[80px] object-cover rounded-full"
             />
             <div>
               <p className="text-xl font-bold">
-                Alisha{" "}
-                <span className="text-lg font-semibold ml-2">Level 2</span>
+                {gig?.author?.name}
+                <span className="text-lg font-semibold ml-2">
+                  Level {gig?.author?.level}
+                </span>
               </p>
               <p className="font-lg font-bold">
-                4.9{" "}
+                pending 4.9{" "}
                 <span className="font-medium pr-2 border-r-2 border-tertiary">
                   (422)
                 </span>{" "}
@@ -68,24 +143,13 @@ const GigPage = () => {
             </div>
           </div>
           <div>
-            <Carousel responsive={responsive} infinite={true}>
-              <img
-                src="https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs2/300427605/original/c8c181ffe1ff04e84fb558c2ae80b1437c153d1e/design-unique-modern-minimalist-and-business-logo-design.png"
-                alt=""
-              />
-              <img
-                src="https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/300427605/original/c1fbf39713e96c5eef4fd63b53652fbfccfca0ab/design-unique-modern-minimalist-and-business-logo-design.png"
-                alt=""
-              />
-              <img
-                src="https://fiverr-res.cloudinary.com/image/upload/t_gig_pdf_gallery_view_ver4,f_jpg/20230208/5_g6uids.jpg"
-                alt=""
-              />
-              <img
-                src="https://fiverr-res.cloudinary.com/images/t_smartwm/t_main1,q_auto,f_auto,q_auto,f_auto/v1/attachments/delivery/asset/6d2d266fa5e4d555181055df602eff60-1677387070/magoz/design-unique-modern-minimalist-and-business-logo-design.png"
-                alt=""
-              />
-            </Carousel>
+            {urls && (
+              <Carousel responsive={responsive} infinite={true}>
+                {urls?.map((url, index) => (
+                  <img src={url} alt="" key={index} />
+                ))}
+              </Carousel>
+            )}
           </div>
           <div>
             <p className="text-xl font-bold mb-4 text-gray">
@@ -200,8 +264,10 @@ const GigPage = () => {
               />
               <div>
                 <p className="text-xl font-bold">
-                  Alisha
-                  <span className="text-lg font-semibold mx-2">Level 2</span>
+                  {gig?.author?.name}
+                  <span className="text-lg font-semibold mx-2">
+                    Level {gig?.author?.level}
+                  </span>
                   <span>Online</span>
                 </p>
                 <p className="font-lg font-bold">
@@ -254,7 +320,7 @@ const GigPage = () => {
               </div>
             </div>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-4" ref={packagesRef}>
             <p className="text-2xl font-bold text-gray">Compare packages</p>
             <table>
               <tr>
@@ -469,30 +535,50 @@ const GigPage = () => {
               <tr>
                 <td className="border-[1px] border-extreamLightGray text-left p-3"></td>
                 <td className="border-[1px] border-extreamLightGray text-center p-3">
-                  <p>₹1,742</p>
+                  <p>₹{prices && gig?.basePrice[0]}</p>
 
-                  <button className="bg-black text-white rounded-md px-10 py-2 text-xl font-bold">
+                  <button
+                    className="bg-black text-white rounded-md px-10 py-2 text-xl font-bold"
+                    onClick={() => {
+                      setBtn1(true);
+                      setBtn2(false);
+                      setBtn3(false);
+                    }}
+                  >
                     Select
                   </button>
                 </td>
                 <td className="border-[1px] border-extreamLightGray text-center p-3">
-                  <p>₹1,742</p>
+                  <p>₹{prices && gig?.basePrice[1]}</p>
 
-                  <button className="bg-black text-white rounded-md px-10 py-2 text-xl font-bold">
+                  <button
+                    className="bg-black text-white rounded-md px-10 py-2 text-xl font-bold"
+                    onClick={() => {
+                      setBtn1(false);
+                      setBtn2(true);
+                      setBtn3(false);
+                    }}
+                  >
                     Select
                   </button>
                 </td>
                 <td className="border-[1px] border-extreamLightGray text-center p-3">
-                  <p>₹1,742</p>
+                  <p>₹{prices && gig?.basePrice[2]}</p>
 
-                  <button className="bg-black text-white rounded-md px-10 py-2 text-xl font-bold">
+                  <button
+                    className="bg-black text-white rounded-md px-10 py-2 text-xl font-bold"
+                    onClick={() => {
+                      setBtn1(false);
+                      setBtn2(false);
+                      setBtn3(true);
+                    }}
+                  >
                     Select
                   </button>
                 </td>
               </tr>
             </table>
           </div>
-          <div></div>
           <div className="space-y-5">
             <p className="text-2xl font-bold">Reviews</p>
             <div className="flex">
@@ -527,7 +613,7 @@ const GigPage = () => {
             </div>
           </div>
         </div>
-        <div className="pb-[100px] min-[1280px]:fixed min-[1280px]:right-14">
+        <div className="min-[1280px]:bottom-16 min-[1280px]:fixed  min-[1280px]:right-14">
           <div className="border-[1px] border-almostWhite">
             <button
               className={
@@ -539,6 +625,8 @@ const GigPage = () => {
                 setBtn1(true);
                 setBtn2(false);
                 setBtn3(false);
+                setPrice(prices && gig?.basePrice[0]);
+                setName("Basic");
               }}
             >
               Basic
@@ -553,6 +641,8 @@ const GigPage = () => {
                 setBtn1(false);
                 setBtn2(true);
                 setBtn3(false);
+                setPrice(prices && gig?.basePrice[1]);
+                setName("Standard");
               }}
             >
               Standard
@@ -567,134 +657,178 @@ const GigPage = () => {
                 setBtn1(false);
                 setBtn2(false);
                 setBtn3(true);
+                setPrice(prices && gig?.basePrice[2]);
+                setName("Premium");
               }}
             >
               Premium
             </button>
           </div>
           <div>
-            {btn1 && (
-              <div className="space-y-5 p-5 border-[1px] border-extreamLightGray">
-                <div>
-                  <p className="text-3xl font-extrabold text-gray">₹1,742</p>
-                  <p className="text-gray">Save up to 15% with <span className="text-green">
-                  Subscribe to Save</span> </p>
-                </div>
+            <div className="space-y-3  py-2 px-5 border-[1px] border-extreamLightGray">
+              {btn1 && (
+                <>
+                  <div>
+                    <p className="text-3xl font-extrabold text-gray">
+                      ₹{prices && gig?.basePrice[0]}
+                    </p>
+                    <p className="text-gray">
+                      Save up to 15% with{" "}
+                      <span className="text-green">Subscribe to Save</span>{" "}
+                    </p>
+                  </div>
 
-                <p className="text-gray text-wrap">
-                  <span className="font-medium text-lg">BASIC</span> 1 Logo concept + High-Quality JPG + <p>Transparent PNG + 3D
-                  Mockup</p> 
-                </p>
-                <p className="text-gray space-x-4 font-semibold"><AccessTimeIcon/> 2 Days <FlipCameraAndroidIcon/>   Delivery Unlimited Revisions </p>
-                <div className="text-lightGray">
-                  <p >
-                    <CheckIcon className="text-black"  /> 1 concept included
+                  <p className="text-gray text-wrap">
+                    <span className="  text-lg">BASIC</span> 1 Logo concept +
+                    High-Quality JPG + <p>Transparent PNG + 3D Mockup</p>
                   </p>
-                  <p>
-                    <CheckIcon className="text-black" /> Logo transparency
+                  <p className="text-gray space-x-4 font-semibold">
+                    <AccessTimeIcon /> 2 Days <FlipCameraAndroidIcon /> Delivery
+                    Unlimited Revisions{" "}
                   </p>
-                  <p>
-                    <CheckIcon /> Vector file
-                  </p>
-                  <p>
-                    <CheckIcon className="text-black" /> Printable file
-                  </p>
-                  <p>
-                    <CheckIcon />Include 3D mockup
+                  <div className="text-lightGray">
+                    <p>
+                      <CheckIcon className="text-black" /> 1 concept included
+                    </p>
+                    <p>
+                      <CheckIcon className="text-black" /> Logo transparency
+                    </p>
+                    <p>
+                      <CheckIcon /> Vector file
+                    </p>
+                    <p>
+                      <CheckIcon className="text-black" /> Printable file
+                    </p>
+                    <p>
+                      <CheckIcon />
+                      Include 3D mockup
+                    </p>
+                    <p>
+                      <CheckIcon /> Include source file
+                    </p>
+                    <p>
+                      <CheckIcon /> Include social media kit
+                    </p>
+                  </div>
+                </>
+              )}
+              {btn2 && (
+                <>
+                  <div>
+                    <p className="text-3xl font-extrabold text-gray">
+                      ₹{prices && gig?.basePrice[1]}
+                    </p>
+                    <p className="text-gray">
+                      Save up to 15% with{" "}
+                      <span className="text-green">Subscribe to Save</span>{" "}
+                    </p>
+                  </div>
 
+                  <p className="text-gray text-wrap">
+                    <span className="  text-lg">BEST MATCH </span> 2 Logo
+                    concepts + High-Quality JPG +{" "}
+                    <p>Transparent PNG + 3D Mockup</p>
                   </p>
-                  <p>
-                    <CheckIcon /> Include source file
+                  <p className="text-gray space-x-4 font-semibold">
+                    <AccessTimeIcon /> 2 Days <FlipCameraAndroidIcon /> Delivery
+                    Unlimited Revisions{" "}
                   </p>
-                  <p>
-                    <CheckIcon /> Include social media kit
-                  </p>
-                </div>
-                <button className="bg-black text-white font-extrabold text-xl w-full py-3 rounded-lg">Continue</button>
-              </div>
-            )}
-            {btn2 && 
-            <div className="space-y-5 p-5 border-[1px] border-extreamLightGray">
-                <div>
-                  <p className="text-3xl font-extrabold text-gray">₹3,480</p>
-                  <p className="text-gray">Save up to 15% with <span className="text-green">
-                  Subscribe to Save</span> </p>
-                </div>
+                  <div className="text-lightGray">
+                    <p>
+                      <CheckIcon className="text-black" /> 1 concept included
+                    </p>
+                    <p>
+                      <CheckIcon className="text-black" /> Logo transparency
+                    </p>
+                    <p>
+                      <CheckIcon /> Vector file
+                    </p>
+                    <p>
+                      <CheckIcon className="text-black" /> Printable file
+                    </p>
+                    <p>
+                      <CheckIcon className="text-black" />
+                      Include 3D mockup
+                    </p>
+                    <p>
+                      <CheckIcon className="text-black" /> Include source file
+                    </p>
+                    <p>
+                      <CheckIcon /> Include social media kit
+                    </p>
+                  </div>
+                </>
+              )}
+              {btn3 && (
+                <>
+                  <div>
+                    <p className="text-3xl font-extrabold text-gray">
+                      ₹{prices && gig?.basePrice[2]}
+                    </p>
+                    <p className="text-gray">
+                      Save up to 15% with{" "}
+                      <span className="text-green">Subscribe to Save</span>{" "}
+                    </p>
+                  </div>
 
-                <p className="text-gray text-wrap">
-                  <span className="font-medium text-lg">BEST MATCH </span> 2 Logo concepts + High-Quality JPG + <p>Transparent PNG + 3D
-                  Mockup</p> 
-                </p>
-                <p className="text-gray space-x-4 font-semibold"><AccessTimeIcon/> 2 Days <FlipCameraAndroidIcon/>   Delivery Unlimited Revisions </p>
-                <div className="text-lightGray">
-                  <p >
-                    <CheckIcon className="text-black"  /> 1 concept included
+                  <p className="text-gray text-wrap">
+                    <span className="  text-lg">PREMIUM </span> 3 Logo concepts
+                    + High-Quality JPG +
+                    <p>Transparent PNG + 3D Mockup + Social media kit</p>
                   </p>
-                  <p>
-                    <CheckIcon className="text-black" /> Logo transparency
+                  <p className="text-gray space-x-4 font-semibold">
+                    <AccessTimeIcon /> 2 Days <FlipCameraAndroidIcon /> Delivery
+                    Unlimited Revisions{" "}
                   </p>
-                  <p>
-                    <CheckIcon /> Vector file
-                  </p>
-                  <p>
-                    <CheckIcon className="text-black" /> Printable file
-                  </p>
-                  <p>
-                    <CheckIcon className="text-black"/>Include 3D mockup
+                  <div className="text-lightGray">
+                    <p>
+                      <CheckIcon className="text-black" /> 1 concept included
+                    </p>
+                    <p>
+                      <CheckIcon className="text-black" /> Logo transparency
+                    </p>
+                    <p>
+                      <CheckIcon className="text-black" /> Vector file
+                    </p>
+                    <p>
+                      <CheckIcon className="text-black" /> Printable file
+                    </p>
+                    <p>
+                      <CheckIcon className="text-black" />
+                      Include 3D mockup
+                    </p>
+                    <p>
+                      <CheckIcon className="text-black" /> Include source file
+                    </p>
+                    <p>
+                      <CheckIcon className="text-black" /> Include social media
+                      kit
+                    </p>
+                  </div>
+                </>
+              )}
 
-                  </p>
-                  <p>
-                    <CheckIcon className="text-black"/> Include source file
-                  </p>
-                  <p>
-                    <CheckIcon /> Include social media kit
-                  </p>
-                </div>
-                <button className="bg-black text-white font-extrabold text-xl w-full py-3 rounded-lg">Continue</button>
-              </div>
-              }
-            {btn3 && <div className="space-y-5 p-5 border-[1px] border-extreamLightGray">
-                <div>
-                  <p className="text-3xl font-extrabold text-gray">₹6,090
-</p>
-                  <p className="text-gray">Save up to 15% with <span className="text-green">
-                  Subscribe to Save</span> </p>
-                </div>
-
-                <p className="text-gray text-wrap">
-                  <span className="font-medium text-lg">PREMIUM </span> 3 Logo concepts + High-Quality JPG +<p>Transparent PNG + 3D Mockup + Social media kit</p> 
-                </p>
-                <p className="text-gray space-x-4 font-semibold"><AccessTimeIcon/> 2 Days <FlipCameraAndroidIcon/>   Delivery Unlimited Revisions </p>
-                <div className="text-lightGray">
-                  <p >
-                    <CheckIcon className="text-black"  /> 1 concept included
-                  </p>
-                  <p>
-                    <CheckIcon className="text-black" /> Logo transparency
-                  </p>
-                  <p>
-                    <CheckIcon className="text-black" /> Vector file
-                  </p>
-                  <p>
-                    <CheckIcon className="text-black" /> Printable file
-                  </p>
-                  <p>
-                    <CheckIcon className="text-black"/>Include 3D mockup
-
-                  </p>
-                  <p>
-                    <CheckIcon className="text-black"/> Include source file
-                  </p>
-                  <p>
-                    <CheckIcon className="text-black"/> Include social media kit
-                  </p>
-                </div>
-                <button className="bg-black text-white font-extrabold text-xl w-full py-3 rounded-lg">Continue</button>
-              </div>}
+              <button
+                className="bg-black text-white font-extrabold text-xl w-full py-3 rounded-lg"
+                onClick={handlePayment}
+              >
+                Continue
+              </button>
+              <p
+                className="text-center cursor-default"
+                onClick={() => {
+                  packagesRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
+              >
+                Compare <ArrowForwardIcon />
+              </p>
+            </div>
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };
