@@ -12,7 +12,7 @@ export const login = async (dispatch, user) => {
   dispatch(loginStart());
 
   try {
-    const res = await axios.post("http://localhost:5000/api/auth/login", user);
+    const res = await axios.post("https://jobs-media-api.onrender.com/api/auth/login", user);
     console.log("LINE AT 10", res.data);
     dispatch(loginSuccess(res.data));
     return res.data;
@@ -28,7 +28,7 @@ export const register = async (dispatch, user) => {
   // console.log(user);
   try {
     const res = await axios.post(
-      "http://localhost:5000/api/auth/register",
+      "https://jobs-media-api.onrender.com/api/auth/register",
       user
     );
     // console.log(res.data);

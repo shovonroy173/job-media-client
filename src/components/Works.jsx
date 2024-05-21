@@ -28,7 +28,7 @@ const Works = () => {
   useEffect(() => {
     const getGigs = async () => {
       const res = await axios.get(
-        "http://localhost:5000/api/gig/getInspiringGigs"
+        "https://jobs-media-api.onrender.com/api/gig/getInspiringGigs"
       );
       setGigs(res.data);
     };

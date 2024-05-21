@@ -340,7 +340,7 @@ useEffect(()=>{
 
 useEffect(()=>{
 const getGigs = async()=>{
-  const res = await axios.get(`http://localhost:5000/api/gig/getGigsByCategories/${cat}` );
+  const res = await axios.get(`https://jobs-media-api.onrender.com/api/gig/getGigsByCategories/${cat}` );
   console.log("LINE AT 340" , res.data);
   setGigs(res.data);
 }
@@ -352,7 +352,7 @@ const [selectedVal , setSelectedVal] = useState("");
 const handleSortAndFilter = async(e)=>{
   setSelectedVal(e.target.value);
 const cat = (type ? type : location.state)
-  const res = await axios.get(`http://localhost:5000/api/gig/getSortFilter/${e.target.value}/${cat}` );
+  const res = await axios.get(`https://jobs-media-api.onrender.com/api/gig/getSortFilter/${e.target.value}/${cat}` );
   console.log("LINE AT 340" , res.data);
   setGigs(res.data);
   // console.log(e.target.value);
@@ -360,7 +360,7 @@ const cat = (type ? type : location.state)
 
 const [text , setText]  = useState("");
 const handleSearch = async()=>{
-  const res = await axios.get(`http://localhost:5000/api/gig/getSearchGig/gigs?q=${text}`  , {category:type});
+  const res = await axios.get(`https://jobs-media-api.onrender.com/api/gig/getSearchGig/gigs?q=${text}`  , {category:type});
   console.log("LINE AT 340" , res.data);
   setGigs(res.data);
 }

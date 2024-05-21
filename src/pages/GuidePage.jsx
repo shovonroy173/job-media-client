@@ -108,7 +108,7 @@ const GuidePage = () => {
     const getBlogs = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/blog/getBlog/${id}`
+          `https://jobs-media-api.onrender.com/api/blog/getBlog/${id}`
         );
         setBlog(res.data);
       } catch (error) {

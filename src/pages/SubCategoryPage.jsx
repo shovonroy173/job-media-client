@@ -343,7 +343,7 @@ useEffect(()=>{
 
 useEffect(()=>{
 const getGigs = async()=>{
-  const res = await axios.get(`http://localhost:5000/api/gig/getGigsByTypes/${location.state}/${pathType}` );
+  const res = await axios.get(`https://jobs-media-api.onrender.com/api/gig/getGigsByTypes/${location.state}/${pathType}` );
   console.log("LINE AT 340" , res.data);
   setGigs(res.data);
 }
@@ -352,7 +352,7 @@ getGigs();
 
 const user = useSelector((state)=>(state.user));
 const handleClick = async(productId)=>{
-  const res = await axios.post(`http://localhost:5000/api/auth/addToWishlist/${productId}` , {userId:user.currentUser._id});
+  const res = await axios.post(`https://jobs-media-api.onrender.com/api/auth/addToWishlist/${productId}` , {userId:user.currentUser._id});
   console.log(res.data);
   toast.success("Added To Wishlist Successfully!!" , {
     position: "top-right",
@@ -363,7 +363,7 @@ const [selectedVal , setSelectedVal] = useState("");
 const handleSortAndFilter = async(e)=>{
   setSelectedVal(e.target.value);
 const cat = (type ? type : location.state)
-  const res = await axios.get(`http://localhost:5000/api/gig/getSortFilter/${e.target.value}/${cat}` );
+  const res = await axios.get(`https://jobs-media-api.onrender.com/api/gig/getSortFilter/${e.target.value}/${cat}` );
   console.log("LINE AT 340" , res.data);
   setGigs(res.data);
   // console.log(e.target.value);
@@ -371,7 +371,7 @@ const cat = (type ? type : location.state)
 
 const [text , setText]  = useState("");
 const handleSearch = async()=>{
-  const res = await axios.get(`http://localhost:5000/api/gig/getSearchGig/gigs?q=${text}`  , {title:location.state});
+  const res = await axios.get(`https://jobs-media-api.onrender.com/api/gig/getSearchGig/gigs?q=${text}`  , {title:location.state});
   console.log("LINE AT 340" , res.data);
   setGigs(res.data);
 }

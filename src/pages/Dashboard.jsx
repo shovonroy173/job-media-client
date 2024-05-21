@@ -146,7 +146,7 @@ const User = () => {
     });
     // console.log(formData);
     try {
-      await axios.post("http://localhost:5000/api/gig", {
+      await axios.post("https://jobs-media-api.onrender.com/api/gig", {
       urls,
       inputs,
       userId,
@@ -179,7 +179,7 @@ const User = () => {
     });
     // console.log(formData);
     try {
-      await axios.post("http://localhost:5000/api/fiverReview", {
+      await axios.post("https://jobs-media-api.onrender.com/api/fiverReview", {
         urls,
         inputs,
         userId,
@@ -224,7 +224,7 @@ const User = () => {
     });
     // console.log(formData);
     try {
-      const res = await axios.post("http://localhost:5000/api/blog", {
+      const res = await axios.post("https://jobs-media-api.onrender.com/api/blog", {
         userId,
         urls,
         inputs,
@@ -241,7 +241,7 @@ const User = () => {
   useEffect(() => {
     const getPaidGigs = async () => {
       const res = await axios.get(
-        `http://localhost:5000/api/auth/getByPaidGigs/${userId}`
+        `https://jobs-media-api.onrender.com/api/auth/getByPaidGigs/${userId}`
       );
       // console.log("LINE AT 188", res.data);
       setPaidGigs(res.data);

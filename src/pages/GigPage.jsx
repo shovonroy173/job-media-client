@@ -64,10 +64,10 @@ const GigPage = () => {
     const getGig = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/gig/getGigById/${id}`
+          `https://jobs-media-api.onrender.com/api/gig/getGigById/${id}`
         );
         const res2 = await axios.get(
-          `http://localhost:5000/api/review/getReviews/${id}`
+          `https://jobs-media-api.onrender.com/api/review/getReviews/${id}`
         );
         // console.log("LINE AT 59" , res?.data);
         setGig(res.data);
@@ -89,7 +89,7 @@ const GigPage = () => {
 const paymentDetails = {price,name}
   const handlePayment = async () => {
     const stripe = await loadStripe(KEY);
-    const res = await axios.post("http://localhost:5000/api/checkout/payment", {
+    const res = await axios.post("https://jobs-media-api.onrender.com/api/checkout/payment", {
       paymentDetails,
       id,   
       userId
@@ -115,7 +115,7 @@ const paymentDetails = {price,name}
 
   const handleClick = async () => {
   try {
-    const res = await axios.post("http://localhost:5000/api/review", {
+    const res = await axios.post("https://jobs-media-api.onrender.com/api/review", {
       id,
       userId,
       text,

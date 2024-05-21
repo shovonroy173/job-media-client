@@ -26,7 +26,7 @@ const Reviews = () => {
   useEffect(() => {
     const getReviews = async () => {
       const res = await axios.get(
-        "http://localhost:5000/api/fiverReview/getReviews"
+        "https://jobs-media-api.onrender.com/api/fiverReview/getReviews"
       );
       setReviews(res.data);
     };

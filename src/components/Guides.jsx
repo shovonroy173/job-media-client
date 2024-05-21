@@ -29,7 +29,7 @@ const Guides = () => {
   useEffect(()=>{
     const getBlogs = async()=>{
       try {
-        const res = await axios.get("http://localhost:5000/api/blog/getBlogs");
+        const res = await axios.get("https://jobs-media-api.onrender.com/api/blog/getBlogs");
         console.log(res.data);
         setBlogs(res.data);
       } catch (error) {

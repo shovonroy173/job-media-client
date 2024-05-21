@@ -20,7 +20,7 @@ const Banner = () => {
   const searchedGigs = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/gig/getSearchGig/gigs?q=${text}`
+        `https://jobs-media-api.onrender.com/api/gig/getSearchGig/gigs?q=${text}`
       );
       setTGigs(res.data);
     } catch (error) {
