@@ -1,7 +1,8 @@
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import axios from "axios";
 const guides = [
   {
     ecommerce: {
@@ -98,73 +99,84 @@ const guides = [
 ];
 const GuidePage = () => {
   const location = useLocation();
-  const type = location.pathname.split("/")[2];
-  // console.log(type);
+  const id = location.pathname.split("/")[2];
+  console.log(id);
   const detailRef = useRef();
+  const [blog, setBlog] = useState([]);
+
+  useEffect(() => {
+    const getBlogs = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/api/blog/getBlog/${id}`
+        );
+        setBlog(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getBlogs();
+  }, [id]);
+  const urls = blog?.urls;
+  const links = blog.links;
+  const linkDetails = blog.linkDetails;
+  console.log(linkDetails , links , urls);
+
   return (
     <>
       <Navbar />
       <div className="pt-36 px-14">
-        {guides.map((item, index) => {
-          return (
-            <div className="mt-10 space-y-16 " key={index}>
-              <p className="text-5xl font-extrabold text-gray">
-                {item[type].title}
-              </p>
-              <p className="text-xl font-medium text-gray">{item[type].desc}</p>
-              <p className="text-sm font-semibold text-lightGray">
-                By: {item[type].author}
-              </p>
-              <img src={item[type].coverImg} alt="" />
-              <p className="text-lg font-semibold text-lightGray">
-                {item[type].summary}
-              </p>
-              <p className="text-3xl font-extrabold text-gray">
-                {item[type].title2}
-              </p>
-              <p className="text-lg font-semibold text-lightGray">
-                {item[type].desc2}
-              </p>
-              <p className="text-3xl font-extrabold text-gray">
-                {item[type].title3}
-              </p>
-              <div className="flex flex-col bg-extreamLightGreen p-10 rounded-lg space-y-2">
-                {item[type]?.links.map((data, index) => {
-                  return (
-                    <p
-                      className="text-lightBlue font-medium hover:text-blue cursor-pointer"
-                      key={index}
-                      onClick={()=>{
-                        detailRef?.current?.scrollIntoView({
-                          behavior: "smooth",
-                        });
-                      }}
-                    >
-                      {data}
-                    </p>
-                  );
-                })}
-              </div>
-              <div className="w-[900px] ml-52 space-y-20">
-                {item[type].linkDetails.map((data, index) => {
-                  
-                  return (
-                    <div className="space-y-10"  key={index} ref={detailRef}>
-                      
-                      <p className="text-3xl font-extrabold text-gray">{data.title}</p>
-                      {data.img && <img src={data.img} alt=""  />}
-                      <p className="text-lg font-semibold text-lightGray">{data.desc}</p>
-                      {data.img2 && <img src={data.img2} alt="" />
-                      }
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
+        <div className="mt-10 space-y-16 ">
+          <p className="text-5xl font-extrabold text-gray">{blog.title}</p>
+          <p className="text-xl font-medium text-gray">{blog.desc}</p>
+          <p className="text-sm font-semibold text-lightGray">
+            By: {blog.author}
+          </p>
+          <img src={urls && urls[0]} alt="" />
+          <p className="text-lg font-semibold text-lightGray">{blog.summary}</p>
+          <p className="text-3xl font-extrabold text-gray">{blog.title2}</p>
+          <p className="text-lg font-semibold text-lightGray">{blog.desc2}</p>
+          <p className="text-3xl font-extrabold text-gray">{blog.title3}</p>
+          <div className="flex flex-col bg-extreamLightGreen p-10 rounded-lg space-y-2">
+            {links && links.map((data, index) => {
+              return (
+                <p
+                  className="text-lightBlue font-medium hover:text-blue cursor-pointer"
+                  key={index}
+                  onClick={() => {
+                    detailRef?.current?.scrollIntoView({
+                      behavior: "smooth",
+                    });
+                  }}
+                >
+                  {data}
+                </p>
+              );
+            })}
+          </div>
+          <div className="w-[900px] ml-52 space-y-20">
+            {linkDetails && linkDetails.map((data, index) => {
+              return (
+                <div className="space-y-10" key={index}>
+                  <p
+                    className="text-3xl font-extrabold text-gray"
+                    ref={detailRef}
+                  >
+                    {data.title}
+                  </p>
+                  {<img src={urls && urls[1 + index]} alt="" />}
+                  <p className="text-lg font-semibold text-lightGray">
+                    {data.desc}
+                  </p>
+                  {<img src={urls && urls[2 + index]} alt="" />}
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };

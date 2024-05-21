@@ -283,7 +283,7 @@ const CategoriesPage = () => {
   const [gigs , setGigs] = useState([]);
 
   const endOffset = itemOffset + itemsPerPage;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  // console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = gigs.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(gigs.length / itemsPerPage);
 
@@ -294,7 +294,7 @@ const CategoriesPage = () => {
     setItemOffset(newOffset);
   };
   const location = useLocation();
-  console.log(location);
+  console.log(location); 
   const pathType = location.pathname.split("/")[2];
   
   // const convert = (pathType)=>{
@@ -305,6 +305,7 @@ const CategoriesPage = () => {
   // };
   // const type = convert(pathType);
   const type = decodeURIComponent(pathType).replace(/ /g, '')
+  const cat = type.replace(/&/g, ' & ');
   console.log(type);
   // const title = (location.state).split(' ').join('');
 
@@ -313,9 +314,9 @@ const options = {
   url: 'https://api.textcortex.com/v1/texts/products/titles',
   headers: {'Content-Type': 'application/json', Authorization: `Bearer gAAAAABl7L9c1zIHNGHE9eVJkuRdOGa-gkO9UGY3aHDS0ZNysTMxoFm0rnzbdpC3yWZsCNUBOcwRBxrGclFT8TbOvNXuYU81_1f368OK_9pkLQCXOth65RDcLSGsMMgK2mctGeu9UYKr `},
   data: {
-    brand: pathType,
-    category: location.state,
-    description: pathType + location.state,
+    brand: type,
+    category: type,
+    description: type ,
     formality: 'default',
     keywords: ['authentic' , 'exclusive' , 'astonishing' , 'masterpiece' , 'stand out'],
     max_tokens: 2048,
@@ -339,12 +340,30 @@ useEffect(()=>{
 
 useEffect(()=>{
 const getGigs = async()=>{
-  const res = await axios.get(`http://localhost:5000/api/gig/getGigsByTypes/${location.state}/${pathType}` );
+  const res = await axios.get(`http://localhost:5000/api/gig/getGigsByCategories/${cat}` );
   console.log("LINE AT 340" , res.data);
   setGigs(res.data);
 }
 getGigs();
-} , [location.state , pathType])
+} , [cat]);
+
+
+const [selectedVal , setSelectedVal] = useState("");
+const handleSortAndFilter = async(e)=>{
+  setSelectedVal(e.target.value);
+const cat = (type ? type : location.state)
+  const res = await axios.get(`http://localhost:5000/api/gig/getSortFilter/${e.target.value}/${cat}` );
+  console.log("LINE AT 340" , res.data);
+  setGigs(res.data);
+  // console.log(e.target.value);
+}
+
+const [text , setText]  = useState("");
+const handleSearch = async()=>{
+  const res = await axios.get(`http://localhost:5000/api/gig/getSearchGig/gigs?q=${text}`  , {category:type});
+  console.log("LINE AT 340" , res.data);
+  setGigs(res.data);
+}
 
 const navigate = useNavigate();
   return (
@@ -358,7 +377,7 @@ const navigate = useNavigate();
             <span className="mx-5">/</span>
             <span>{type}</span>
           </p>
-          <p className="text-4xl font-extrabold">Logo Design</p>
+          <p className="text-4xl font-extrabold">{type}</p>
           <p className="text-tertiary font-semibold">
             {desc}
           </p>
@@ -368,13 +387,15 @@ const navigate = useNavigate();
                 type="text"
                 placeholder="title.."
                 className="h-12 rounded-s-lg px-3 outline-none"
+                value={text}
+                onChange={(e)=>(setText(e.target.value))}
               />
               <div className="h-12 bg-lightGreen p-3 rounded-e-lg">
-                <SearchIcon />
+                <SearchIcon onClick={handleSearch}/>
               </div>
             </div>
             <div className="flex justify-between w-[350px]">
-              <Box sx={{ minWidth: 150 }}>
+            <Box sx={{ minWidth: 150 }}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
                     Sort by:
@@ -382,13 +403,13 @@ const navigate = useNavigate();
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value="age"
+                    value={selectedVal}
                     label="Sort by:"
-                    //   onChange={handleChange}
+                      onChange={handleSortAndFilter}
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value={"old"}>Old to New</MenuItem>
+                    <MenuItem value={"new"}>New to Old</MenuItem>
+                    <MenuItem value={"popular"}>Popular</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
@@ -400,13 +421,13 @@ const navigate = useNavigate();
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value="age"
+                    value={selectedVal}
                     label="Filter by:"
-                    //   onChange={handleChange}
+                      onChange={handleSortAndFilter}
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value={"high"}>Price (high to low)</MenuItem>
+                    <MenuItem value={"low"}>Price (low to high)</MenuItem>
+                    <MenuItem value={"rated"}>High Rated</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
@@ -415,7 +436,7 @@ const navigate = useNavigate();
         </div>
 
         <div className="my-10 flex items-center flex-wrap justify-between ">
-          {currentItems.map((item, index) => (
+          {currentItems.length > 0 ? currentItems.map((item, index) => (
             <div
               className="w-[300px] h-[350px]  font-extrabold mb-5 relative"
               key={index}
@@ -448,7 +469,14 @@ const navigate = useNavigate();
                 <p>From ${item.basePrice[0]}</p>
               </div>
             </div>
-          ))}
+          )):
+          <div className="flex flex-col w-[900px] h-[500px] bg-[url('/public/nodata.svg')] bg-no-repeat bg-center bg-contain">
+                <div className="bg-extreamLightGray/40 text-center px-8 py-6 rounded-lg space-y-6 text-xl text-gray font-bold">
+                  No Gigs Posted Till Now!!
+                </div>
+              </div>
+          }
+          
         </div>
         <ReactPaginate
           breakLabel="..."

@@ -10,6 +10,7 @@ export default {
       boxShadow: {
         "box-shadow": "0px 0px 14px -3px rgba(0,0,0,0.75)",
         "box-shadow2": "0px 0px 300px -11px rgba(0,0,0,0.57)",
+        "box-shadow3":"0px 0px 18px 11px rgba(255,255,255,.6)"
       },
     },
     colors: {
@@ -24,6 +25,7 @@ export default {
       white: "#ffff",
       almostWhite:"#f2f2f2" , 
       black: "#000000",
+      searchedBack : "rgba(0, 0, 0, 0.3)" , 
       background: "rgba(167, 163, 165, 0.46)",
       brandBack:"#f2f2f2"
 

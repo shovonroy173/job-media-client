@@ -28,36 +28,38 @@ const Register = () => {
     navigate("/login")
   }
   return (
-    <div className="relative">
-      <div className="absolute inset-x-1/3 top-20 ">
+    <div className="relative h-screen w-full bg-[url('/public/reg.jpg')] bg-no-repeat bg-center bg-cover">
+      
+      <div className="absolute inset-x-1/3 top-20 bg-white/60 shadow-box-shadow3 rounded-xl px-5 py-10">
         <div className="flex flex-col justify-between h-96">
-          <p className="">Sign Up</p>
+          <img src="/public/logo.png" alt="" className="w-14 h-14 object-cover rounded-full" />
+          <p className="text-green text-2xl font-bold ">Sign Up</p>
           <input
             type="text"
             placeholder="Name.."
-            className=""
+            className="bg-white/10  outline-none border-b-[1px] border-lightGray text-gray font-semibold text-md py-1"
             name="name"
             onChange={((e)=>(setName(e.target.value)))}
           />
           <input
             type="text"
             placeholder="Email.."
-            className=""
+            className="bg-white/10  outline-none border-b-[1px] border-lightGray text-gray font-semibold text-md py-1"
             name="name"
             onChange={((e)=>(setEmail(e.target.value)))}
           />
           <input
             type="password"
             placeholder="Password.."
-            className="registerInput"
+            className="bg-white/10  outline-none border-b-[1px] border-lightGray text-gray font-semibold text-md py-1"
             name="genre"
             onChange={((e)=>(setPassword(e.target.value)))}
           />
 
-        <button className="" onClick={handleClick} >
+        <button className="bg-green text-white  text-xl rounded-md font-semibold py-3 " onClick={handleClick} >
           Sign Up
         </button>
-        <button className="" onClick={handleRedirect} >
+        <button className="hover:underline text-gray font-semibold" onClick={handleRedirect} >
           Already registerd? Click here to login.
         </button>
         </div>

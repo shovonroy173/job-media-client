@@ -1,5 +1,9 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import video from "../assets/video.mp4";
+
 const Reviews = () => {
   const responsive = {
     desktop: {
@@ -18,63 +22,77 @@ const Reviews = () => {
       slidesToSlide: 1, // optional, default to 1.
     },
   };
+  const [reviews, setReviews] = useState();
+  useEffect(() => {
+    const getReviews = async () => {
+      const res = await axios.get(
+        "http://localhost:5000/api/fiverReview/getReviews"
+      );
+      setReviews(res.data);
+    };
+    getReviews();
+  }, []);
+  // console.log(reviews);
   return (
     <div className=" px-14 py-20 bg-pink">
-        <Carousel responsive={responsive} infinite={true} keyBoardControl={true} >
-      <div className="flex">
-        <video
-          src="https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c0fd273d2c6d9a064f3ae35579b2bbdf&profile_id=139&oauth2_token_id=57447761"
-          controls
-          autoPlay
-          className="rounded-lg h-[300px] mr-20"
-        ></video>
-        <div className="w-2/3">
-          <div className="flex items-center mb-8">
-            <p className="text-2xl text-tertiary font-bold">
-              Caillin Tormey , Chief Commercial Officer
-            </p>
+      <Carousel responsive={responsive} infinite={true} keyBoardControl={true}>
+        {reviews &&
+          reviews.map((item, index) => (
+            <div className="flex" key={index}>
+              <video
+                src={item?.urls[0]}
+                type="video/*"
+                controls
+                autoPlay
+                className="rounded-lg h-[300px] mr-20"
+              />
+              {/* <ReactPlayer url={"https://www.youtube.com/watch?v=0SFXh0DEAbQ"} controls loop={true} className="rounded-lg h-[300px] mr-20" autoPlay playing /> */}
+              <div className="w-2/3">
+                <div className="flex items-center mb-8">
+                  <p className="text-2xl text-tertiary font-bold">
+                    {item?.userId?.name} | {item?.userId?.country} | 
+                  </p>
 
-            <img
-              src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/naadam-logo-x2.a79031d.png"
-              alt=""
-              className="h-10"
-            />
-          </div>
-          <p className="text-4xl font-semibold text-lightGreen w-5/6">
-            &quot;We&apos;ve used Fiverr for Shopify web development, graphic
-            design, and backend web development. Working with Fiverr makes my
-            job a little easier every day.&quot;
-          </p>
-        </div>
-      </div>
-      <div  className="flex  justify-between">
-        <video
-          src="https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c0fd273d2c6d9a064f3ae35579b2bbdf&profile_id=139&oauth2_token_id=57447761"
-          controls
-          autoPlay
-          className="rounded-lg h-[300px] mr-20"
-        ></video>
-        <div className="w-2/3">
-          <div className="flex items-center mb-8">
-            <p className="text-2xl text-tertiary font-bold">
-              Caillin Tormey , Chief Commercial Officer
-            </p>
+                  <img
+                    src="/public/reviews.svg"
+                    alt=""
+                    className="ml-5 h-10"
+                  />
+                </div>
+                <p className="text-4xl font-semibold text-lightGreen w-5/6">
+                  &quot;{item?.review}&quot;
+                </p>
+              </div>
+            </div>
+          ))}
 
-            <img
-              src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/naadam-logo-x2.a79031d.png"
-              alt=""
-              className="h-10"
-            />
+        <div className="flex  justify-between">
+          <video
+            src={video}
+            controls
+            autoPlay
+            className="rounded-lg h-[300px] mr-20"
+          ></video>
+          <div className="w-2/3">
+            <div className="flex items-center mb-8">
+              <p className="text-2xl text-tertiary font-bold">
+                Caillin Tormey , Chief Commercial Officer
+              </p>
+
+              <img
+                src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/naadam-logo-x2.a79031d.png"
+                alt=""
+                className="h-10"
+              />
+            </div>
+            <p className="text-4xl font-semibold text-lightGreen w-5/6">
+              &quot;We&apos;ve used Fiverr for Shopify web development, graphic
+              design, and backend web development. Working with Fiverr makes my
+              job a little easier every day.&quot;
+            </p>
           </div>
-          <p className="text-4xl font-semibold text-lightGreen w-5/6">
-            &quot;We&apos;ve used Fiverr for Shopify web development, graphic
-            design, and backend web development. Working with Fiverr makes my
-            job a little easier every day.&quot;
-          </p>
         </div>
-      </div>
-      </Carousel> 
-      
+      </Carousel>
     </div>
   );
 };

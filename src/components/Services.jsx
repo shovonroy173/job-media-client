@@ -29,7 +29,7 @@ const Services = () => {
   draggable={true}
   >
     <div className='relative text-white' onClick={
-      () =>{navigate(`/categories/Graphics & Design` , {state:"AI Artists"})}}
+      () =>{navigate(`/categories/Graphics & Design/AI Artists` , {state:"AI Artists"})}}
     >
       <img src="https://fiverr-res.cloudinary.com/q_auto,f_auto,w_255,dpr_2.0/v1/attachments/generic_asset/asset/7ead3b2056987e6fa3aad69cf897a50b-1690383161247/ai-artists-2x.png" alt="" className='rounded-md w-[300px] h-[400px]' />
       <div className='absolute top-3 left-3'>
@@ -38,7 +38,7 @@ const Services = () => {
       </div>
     </div>
     <div className='relative text-white' onClick={
-      () =>{navigate(`/categories/Graphics & Design`, {state:"Logo Design"})}}>
+      () =>{navigate(`/categories/Graphics & Design/Logo Design`, {state:"Logo Design"})}}>
       <img src="https://fiverr-res.cloudinary.com/q_auto,f_auto,w_255,dpr_1.0/v1/attachments/generic_asset/asset/7ead3b2056987e6fa3aad69cf897a50b-1690383161257/logo-design-2x.png" alt="" className='rounded-md   w-[300px] h-[400px]' />
       <div className='absolute top-3 left-3'>
         <p className='text-sm font-medium'>Build your brand</p>
@@ -46,7 +46,7 @@ const Services = () => {
       </div>
     </div>
     <div className='relative text-white' onClick={
-      () =>{navigate(`/categories/Programming & Tech` , {state:"WordPress"})}}>
+      () =>{navigate(`/categories/Programming & Tech/WordPress` , {state:"WordPress"})}}>
       <img src="https://fiverr-res.cloudinary.com/q_auto,f_auto,w_255,dpr_2.0/v1/attachments/generic_asset/asset/7ead3b2056987e6fa3aad69cf897a50b-1690383161257/wordpress-2x.png" alt="" className=' rounded-md  w-[300px] h-[400px]' />
       <div className='absolute top-3 left-3'>
         <p className='text-sm font-medium'>Customize your website</p>
@@ -54,7 +54,7 @@ const Services = () => {
       </div>
     </div>
     <div className='relative text-white'onClick={
-      () =>{navigate(`/categories/Music & Audio` , {state:"Voice Over"})}}>
+      () =>{navigate(`/categories/Music & Audio/Voice Over` , {state:"Voice Over"})}}>
       <img src="https://fiverr-res.cloudinary.com/q_auto,f_auto,w_255,dpr_2.0/v1/attachments/generic_asset/asset/7ead3b2056987e6fa3aad69cf897a50b-1690383161253/voice-over-2x.png" alt="" className=' rounded-md  w-[300px] h-[400px]' />
       <div className='absolute top-3 left-3'>
         <p className='text-sm font-medium'>Share your mesage</p>
@@ -62,15 +62,15 @@ const Services = () => {
       </div>
     </div>
     <div className='relative text-white' onClick={
-      () =>{navigate(`/categories/Video & Animation`) , {state:"Video Explainer"}}}>
-      <img src="https://fiverr-res.cloudinary.com/q_auto,f_auto,w_255,dpr_1.0/v1/attachments/generic_asset/asset/7ead3b2056987e6fa3aad69cf897a50b-1690383161257/logo-design-2x.png" alt="" className=' rounded-md  w-[300px] h-[400px]' />
+      () =>{navigate(`/categories/Video & Animation/Video Explainer`) , {state:"Video Explainer"}}}>
+      <img src="https://fiverr-res.cloudinary.com/q_auto,f_auto,w_255,dpr_2.0/v1/attachments/generic_asset/asset/7ead3b2056987e6fa3aad69cf897a50b-1690383161245/animated-explainer-2x.png" alt="" className=' rounded-md  w-[300px] h-[400px]' />
       <div className='absolute top-3 left-3'>
         <p className='text-sm font-medium'>Engage your audience</p>
         <p className='text-2xl font-bold'>Video Explainer</p>
       </div>
     </div>
     <div className='relative text-white' onClick={
-      () =>{navigate(`/categories/Digital Marketing`) , {state:"Social Mediar"}}}>
+      () =>{navigate(`/categories/Digital Marketing/Social Media"`) , {state:"Social Media"}}}>
       <img src="https://fiverr-res.cloudinary.com/q_auto,f_auto,w_255,dpr_2.0/v1/attachments/generic_asset/asset/7ead3b2056987e6fa3aad69cf897a50b-1690383161249/social-2x.png" alt="" className=' rounded-md  w-[300px] h-[400px]' />
       <div className='absolute top-3 left-3'>
         <p className='text-sm font-medium'>Reach more customers</p>
@@ -78,7 +78,7 @@ const Services = () => {
       </div>
     </div>
     <div className='relative text-white' onClick={
-      () =>{navigate(`/categories/Writing & Translation`) , {state:"Transalation"}}}>
+      () =>{navigate(`/categories/Writing & Translation/Transalation`) , {state:"Transalation"}}}>
       <img src="https://fiverr-res.cloudinary.com/q_auto,f_auto,w_255,dpr_2.0/v1/attachments/generic_asset/asset/7ead3b2056987e6fa3aad69cf897a50b-1690383161247/translation-2x.png" alt="" className=' rounded-md  w-[300px] h-[400px]' />
       <div className='absolute top-3 left-3'>
         <p className='text-sm font-medium'>Go global</p>
@@ -86,7 +86,7 @@ const Services = () => {
       </div>
     </div>
     <div className='relative text-white' onClick={
-      () =>{navigate(`/categories/Data`) , {state:"Data Entry"}}}>
+      () =>{navigate(`/categories/Data/Data Entry`) , {state:"Data Entry"}}}>
       <img src="https://fiverr-res.cloudinary.com/q_auto,f_auto,w_255,dpr_2.0/v1/attachments/generic_asset/asset/7ead3b2056987e6fa3aad69cf897a50b-1690383161248/data-entry-2x.png" alt="" className=' rounded-md  w-[300px] h-[400px]' />
       <div className='absolute top-3 left-3'>
         <p className='text-sm font-medium'>Learn your buisness</p>
@@ -94,7 +94,7 @@ const Services = () => {
       </div>
     </div>
     <div className='relative text-white' onClick={
-      () =>{navigate(`/categories/Digital Marketing`) , {state:"SEO"}}}>
+      () =>{navigate(`/categories/Digital Marketing/SEO`) , {state:"SEO"}}}>
       <img src="https://fiverr-res.cloudinary.com/q_auto,f_auto,w_255,dpr_2.0/v1/attachments/generic_asset/asset/27f914ed7984fdd2d55aa1fb5e74bd6a-1690384243592/seo-2x.png" alt="" className=' rounded-md  w-[300px] h-[400px]' />
       <div className='absolute top-3 left-3'>
         <p className='text-sm font-medium'>Unlock growth online</p>

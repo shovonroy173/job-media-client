@@ -14,11 +14,10 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FlipCameraAndroidIcon from "@mui/icons-material/FlipCameraAndroid";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Footer from "../components/Footer";
-
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import { loadStripe } from "@stripe/stripe-js";
 const KEY =
   "pk_test_51N55v0SG4487ZVYHjPu1nZv0uWzyK13KJsIB6oxLWsfcYbuG85TG2sD31jmnAWLbE8l5NKiTXC7O5mrW1LE0YGxh00XlH0rs0X";
@@ -55,8 +54,11 @@ const GigPage = () => {
 
   const id = location.pathname.split("/")[3];
   const [gig, setGig] = useState({});
+  const [reviewerValue, setReviewerValue] = useState([]);
+
   const prices = gig?.basePrice;
   const [price, setPrice] = useState(prices && gig?.basePrice[0]);
+  // console.log(prices&&gig?.basePrice[0]);
 
   useEffect(() => {
     const getGig = async () => {
@@ -64,8 +66,12 @@ const GigPage = () => {
         const res = await axios.get(
           `http://localhost:5000/api/gig/getGigById/${id}`
         );
+        const res2 = await axios.get(
+          `http://localhost:5000/api/review/getReviews/${id}`
+        );
         // console.log("LINE AT 59" , res?.data);
         setGig(res.data);
+        setReviewerValue(res2.data);
       } catch (error) {
         console.log(error);
       }
@@ -74,15 +80,19 @@ const GigPage = () => {
   }, [id]);
 
   // console.log("Gig: ", gig);
-
+ 
   const user = useSelector((state) => state.user);
   const userId = user.currentUser._id;
+  const userName = user.currentUser.name;
+  const userCountry = user.currentUser.Country;
+  const userLevel = user.currentUser.level;
+const paymentDetails = {price,name}
   const handlePayment = async () => {
     const stripe = await loadStripe(KEY);
     const res = await axios.post("http://localhost:5000/api/checkout/payment", {
-      price,
-      name,
-      userId,
+      paymentDetails,
+      id,   
+      userId
     });
 
     const result = stripe.redirectToCheckout({
@@ -99,6 +109,58 @@ const GigPage = () => {
   const urls = gig?.urls;
 
   // console.log(prices);
+
+  const [review, setReview] = useState(null);
+  const [text, setText] = useState("");
+
+  const handleClick = async () => {
+  try {
+    const res = await axios.post("http://localhost:5000/api/review", {
+      id,
+      userId,
+      text,
+      userName , 
+      userCountry , 
+      userLevel
+    });
+    // console.log(res.data);
+    setReview(res.data);
+    // window.location.reload();
+    
+  } catch (error) {
+    console.log(error);
+  }
+    
+
+  };
+  // console.log(review);
+  // const reviews = gig?.reviews;
+
+  // useEffect(() => {
+  //   const getReviews = async () => {
+  //     try {
+        
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   getReviews();
+  // }, [id]);
+
+  // console.log('LINE AT 151' , user?.currentUser?.paidGigs);
+  const [paymentFlag , setPaymentFlag] = useState(true);
+  useEffect(()=>{
+    const setFlag = ()=>{
+      user?.currentUser?.paidGigs.map((item)=>{
+        {(item === id)&&setPaymentFlag(false)}
+        
+      });
+      
+    };
+    setFlag();
+  } , [id , user?.currentUser?.paidGigs]);
+  
+  // console.log(paymentFlag);
 
   return (
     <>
@@ -586,30 +648,96 @@ const GigPage = () => {
                 type="text"
                 placeholder="enter your review.."
                 className="w-[600px] h-[60px] text-xl font-semibold outline-none border-2 border-tertiary rounded-s-lg px-3"
+                value={review && ""}
+                onChange={(e) => setText(e.target.value)}
               />
-              <button className="bg-lightGreen w-[100px] h-[60px] px-2 rounded-e-lg">
+              <button
+                className="bg-lightGreen w-[100px] h-[60px] px-2 rounded-e-lg"
+                onClick={handleClick}
+              >
                 Send
               </button>
             </div>
             <hr />
-            <div className="flex">
-              <img
-                src="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_profile_small/v1/attachments/profile/photo/8563cebd23d715b3b35b807044964727-1611653633994/c0622120-e351-4950-95ea-ff9db5b82119.jpg"
-                alt=""
-                className="w-[60px] h-[60px] object-cover rounded-full mr-4"
-              />
-              <div>
-                <p>ivancoole</p>
-                <p>United States</p>
-                <p>5 star</p>
-                <p>
-                  Once again, an absolute pleasure! I am receiving precisely
-                  what I require to establish the brand for my new company, This
-                  Seller has successfully created and delivered my logo,
-                  website, Launch Party invitation, letterhead, and business
-                  cards
-                </p>
-              </div>
+            <div className="flex flex-col space-y-2">
+              {review && <div className="flex" >
+                      {review && (
+                        <div className="flex bg-almostWhite">
+                          <img
+                            src={review && review?.img}
+                            alt=""
+                            className="w-[60px] h-[60px] object-cover rounded-full mr-4"
+                          />
+                          <div>
+                            <div className="flex justify-center items-center text-lightGray font-medium">
+                            <p>{review && review.userName} | </p> 
+                            <p>{review && review.userCountry} | </p>  
+                            <p> {review && review?.userLevel} star</p>
+                            </div>
+                            <p className="text-gray">{review.text}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>}
+              {reviewerValue &&
+                reviewerValue.map((item, index) => {
+                  //                   const reviewer = item.userId
+                  //                   ? new Promise((resolve, reject) => {
+                  //                       getReviewer(item.userId)
+                  //                         .then((res) => {
+                  //                           // console.log("LINE AT 637", res);
+                  //                           resolve(res); // Resolve the Promise with the result
+                  //                         })
+                  //                         .catch((err) => {
+                  //                           console.log(err);
+                  //                           reject(err); // Reject the Promise with the error
+                  //                         });
+                  //                     })
+                  //                   : null;
+                  //                   let reviewerFuncCalled = false;
+
+                  // const reviewerValueFunc = async () => {
+                  //   try {
+                  //     if (!reviewerFuncCalled) {
+                  //       // Execute the function logic only if it hasn't been called before
+                  //       reviewerFuncCalled = true;
+                  //       const value = await reviewer;
+                  //       // console.log(value);
+                  //       setReviewerValue(value);
+
+                  //       // Update the flag to indicate that the function has been called
+
+                  //       console.log(reviewerFuncCalled);
+                  //     }
+                  //   } catch (error) {
+                  //     console.error(error);
+                  //   }
+                  // };
+
+                  // reviewerFuncCalled && reviewerValueFunc();
+
+                  return (
+                    <div className=" bg-almostWhite p-2 rounded-xl" key={index}>
+                      {item && (
+                        <div className="flex">
+                          <img
+                            src={item && item?.img}
+                            alt=""
+                            className="w-[60px] h-[60px] object-cover rounded-full mr-4"
+                          />
+                          <div >
+                            <div className="flex items-center text-lightGray font-medium">
+                            <p>{item && item.userName}</p>
+                            <p>{item && item.userCountry}</p>
+                            <p>{item && item?.userLevel} star</p>
+                            </div>
+                            <p className="text-gray">{item.text}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>
@@ -808,12 +936,21 @@ const GigPage = () => {
                 </>
               )}
 
+              {paymentFlag ? 
               <button
                 className="bg-black text-white font-extrabold text-xl w-full py-3 rounded-lg"
                 onClick={handlePayment}
               >
                 Continue
-              </button>
+              </button> 
+              :
+              <p
+              className="text-center cursor-not-allowed text-green font-extrabold text-xl bg-almostWhite w-full py-3 rounded-lg"
+              
+            >
+             <CheckCircleRoundedIcon/> Already bought !!
+            </p>
+              }
               <p
                 className="text-center cursor-default"
                 onClick={() => {

@@ -446,7 +446,7 @@ const navigate = useNavigate();
         </div>
 
         <div className="my-10 flex items-center flex-wrap justify-between ">
-          {currentItems.map((item, index) => (
+          {currentItems.length > 0 ? currentItems.map((item, index) => (
             <div
               className="w-[300px] h-[350px]  font-extrabold mb-5 relative"
               key={index}
@@ -479,7 +479,14 @@ const navigate = useNavigate();
                 <p>From ${item.basePrice[0]}</p>
               </div>
             </div>
-          ))}
+          )): 
+          <div className="flex flex-col w-[900px] h-[500px] bg-[url('/public/nodata.svg')] bg-no-repeat bg-center bg-contain">
+                <div className="bg-extreamLightGray/40 text-center px-8 py-6 rounded-lg space-y-6 text-xl text-gray font-bold">
+                  No Gigs Posted Till Now!!
+                </div>
+              </div>
+          }
+          
         </div>
         <ReactPaginate
           breakLabel="..."

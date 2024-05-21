@@ -1,10 +1,12 @@
 import VerifiedIcon from '@mui/icons-material/Verified';
+import logo from "../assets/logo.png";
 const Buisness = () => {
   return (
     <div className='flex items-center justify-between px-14 py-20 bg-blue text-white rounded-3xl'>
         <div>
         <p className='text-2xl font-bold mb-10 '>
-            <span className='text-5xl'>jobs</span><span className='text-lightGreen'>.</span>  Buisness Solutions 
+            <img src={logo} alt="" className='w-16 h-16 object-cover rounded-full' />
+          Buisness Solutions 
         </p>
             <p className='text-4xl font-bold mb-10'>Advanced solutions and professional talent for businesses</p>
             <div className='mb-5 flex items-center '>
@@ -43,7 +45,7 @@ const Buisness = () => {
                 </p>
                 </div>
             </div>
-            <button className='outline-none px-6 py-3 bg-white text-secondary font-bold text-xl rounded-md'>Learn more</button>
+            <button className='outline-none px-6 py-3 bg-white text-blue font-bold text-xl rounded-md '>Learn more</button>
             
         </div>
         <div>

@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 const AllService = () => {
   const services = [
     {
@@ -41,18 +43,21 @@ const AllService = () => {
         title: "Photography",
       },
   ];
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col items-start px-14 py-20 ">
       <p className="text-4xl font-bold mb-10">You need it, we&apos;ve got it</p>
       <div className="flex flex-wrap items-center justify-center">
         {services.map((item , index)=>(
-            <div className="flex flex-col items-center w-[250px]" key={index}>
+            <div className="flex flex-col items-center w-[250px] rounded-lg hover:shadow-box-shadow hover:bg-searchedBack hover:text-white hover:text-lg hover:font-medium" key={index} onClick={() => {
+              navigate(`/categories/${item.title}`);
+            }}>
             <img
               src={item.img}
               alt=""
-              className="w-[100px] h-[100px] border-b-2 border-tertiary hover:border-lightGreen"
+              className="w-[100px] h-[100px] border-b-2 border-lightGray hover:border-lightGreen"
             />
-            <p>{item.title}</p>
+            <p >{item.title}</p>
           </div>
         ))}
         
